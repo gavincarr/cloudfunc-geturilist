@@ -1,0 +1,16 @@
+.*.sw?
+.nfs*
+*~
+
+/DevNotes
+/TODO
+/c.out
+/data/*
+/delta/applied/*
+/dist/*
+/node_modules/*
+/out/*
+/pkg/linux_amd64/*
+/pkg/*.*/
+/src/*.*/
+/var/*

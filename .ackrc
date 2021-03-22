@@ -1,0 +1,14 @@
+--ignore-dir=blib
+--ignore-dir=data
+--ignore-dir=inc
+--ignore-dir=log
+--ignore-dir=node_modules
+--ignore-dir=services
+--ignore-dir=src/github.com
+--ignore-dir=src/golang.org
+--ignore-dir=src/gopkg.in
+--ignore-dir=var
+--ignore-file=match:^bootstrap
+--ignore-file=match:\.min\.css$
+--ignore-file=match:\.min\.css\.map$
+--ignore-file=match:\.min\.js$
