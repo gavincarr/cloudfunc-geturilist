@@ -121,13 +121,25 @@ func parsePrefix(name string) string {
 func fetchUrls(ctx context.Context, bucket *storage.BucketHandle, name string) []*neturl.URL {
 	obj := bucket.Object(name)
 
-	r, err := obj.NewReader(ctx)
+	rdr, err := obj.NewReader(ctx)
 	if err != nil {
-		log.Fatalf("creating reader for object %q failed: %s\n", name, err)
+		log.Fatalf("creating reader for object %q: %s\n", name, err)
 	}
-	defer r.Close()
+	defer rdr.Close()
 
-	scanner := bufio.NewScanner(r)
+	var scanner *bufio.Scanner
+	reGzip := regexp.MustCompile(`\.gz$`)
+	if reGzip.MatchString(name) {
+		grdr, err := gzip.NewReader(rdr)
+		if err != nil {
+			log.Fatalf("creating gzip reader for object %q: %s\n", name, err)
+		}
+		defer grdr.Close()
+		scanner = bufio.NewScanner(grdr)
+	} else {
+		scanner = bufio.NewScanner(rdr)
+	}
+
 	var urls []*neturl.URL
 	for scanner.Scan() {
 		urlStr := scanner.Text()
@@ -240,9 +252,10 @@ func GetURIList(ctx context.Context, e GCSEvent) error {
 	log.SetFlags(0)
 	log.Printf("%s execution started\n", e.Name)
 
-	// Only handle objects that end in '.txt'
-	reTxt := regexp.MustCompile(`.txt$`)
+	// Only handle objects that end in '.txt(.gz)?'
+	reTxt := regexp.MustCompile(`.txt(\.gz)?$`)
 	if !reTxt.MatchString(e.Name) {
+		log.Printf("skipping non-uri file %q\n", e.Name)
 		return nil
 	}
 
