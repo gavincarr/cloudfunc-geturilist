@@ -23,11 +23,18 @@ experiment to see how many urls you can process at a given concurrency level
 before you start getting jobs being killed before completion - 300 per file
 seems to be a good conservative starting point.
 
+Installation
+------------
+
+```sh
+git clone https://github.com/gavincarr/cloudfunc-geturilist
+```
+
 
 Example Usage
 -------------
 
-```
+```sh
 NAME=cloudfunc-geturilist
 BUCKET_IN=ofn-gul-in        # GCS Bucket where input uri-lists are copied to
 BUCKET_OUT=ofn-gul-out      # GCS Bucket where output response archives are written
