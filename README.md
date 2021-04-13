@@ -15,8 +15,8 @@ uploaded to an input Google Storage Bucket object, fetches the content at each
 url (following redirects), and saves the final content (and HTTP response headers)
 to an output Google Storage Bucket object, one object per requested url.
 Output objects can be named in various ways, but default to using the sha1 hash
-of the requested url. Output files are in WARC (Web ARChive v1.1) format, gzip-
-compressed.
+of the requested url. Output files are in WARC (Web ARChive v1.1) format,
+gzip-compressed.
 
 Because cloud functions have a limited timespan (540s/9min), you will have to
 experiment to see how many urls you can process at a given concurrency level
@@ -41,7 +41,7 @@ BUCKET_OUT=ofn-gul-out      # GCS Bucket where output response archives are writ
 GOVER=go113
 CONCURRENCY=3               # number of requests for each instance to run concurrently
 MAX_INSTANCES=10            # number of instances to run
-MEMORY=512MB
+MEMORY=512MB                # memory allocation for each instance
 
 # Deploying
 gcloud functions deploy "$NAME" --entry-point=GetURIList --runtime "$GOVER" \
