@@ -41,11 +41,13 @@ BUCKET_OUT=ofn-gul-out      # GCS Bucket where output response archives are writ
 GOVER=go113
 CONCURRENCY=3               # number of requests for each instance to run concurrently
 MAX_INSTANCES=10            # number of instances to run
+MEMORY=512MB
 
 # Deploying
 gcloud functions deploy "$NAME" --entry-point=GetURIList --runtime "$GOVER" \
-  --timeout t9m --allow-unauthenticated --max-instances "$MAX_INSTANCES" \
   --trigger-event google.storage.object.finalize --trigger-resource "$BUCKET_IN" \
+  --timeout t9m --allow-unauthenticated \
+  --max-instances "$MAX_INSTANCES" --memory "$MEMORY" \
   --set-env-vars "GUL_OUTPUT_BUCKET=$BUCKET_OUT,GUL_CONCURRENCY=$CONCURRENCY"
 
 # Triggering
